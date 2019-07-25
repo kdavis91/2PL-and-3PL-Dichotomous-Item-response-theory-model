@@ -1,1 +1,0 @@
-# 2PL-and-3PL-Dichotomous-Item-response-theory-model

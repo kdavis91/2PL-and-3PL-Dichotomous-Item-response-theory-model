@@ -1,11 +1,9 @@
-
-
 ---
 title: "2PL and 3PL Dichotomous Item response theory models"
-output: html_document
+output:
+  rmarkdown::github_document
  
 ---
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE,cache=TRUE)
 library(ltm)

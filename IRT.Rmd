@@ -1,0 +1,133 @@
+
+
+---
+title: "2PL and 3PL Dichotomous Item response theory models"
+output: html_document
+ 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,cache=TRUE)
+library(ltm)
+library(mirt)
+
+```
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  fig.path = "README_figs/README-"
+)
+```
+
+  
+##Data##
+```{r , echo=FALSE}
+#Dicotomous 0 OR 1
+
+data(LSAT)
+head(LSAT)  
+```  
+
+The Law School Admission Test (LSAT),
+The LSAT is a classical example in educational testing for measuring ability traits. This test was designed to measure a single latent ability scale.
+
+*Format*  
+
+A data frame with the responses of 1000 individuals to 5 questions.
+
+*References*  
+
+Bartholomew, D., Steel, F., Moustaki, I. and Galbraith, J. (2002) The Analysis and Interpretation of Multivariate Data for Social Scientists. London: Chapman and Hall.
+
+
+##Libraries##
+
+```{r}
+#library(ltm)
+#library(mirt)
+```
+
+## Model
+
+Logistic distribution:
+
+```{r,}
+IRTmodel <- ltm(LSAT~z1,IRT.param= TRUE)
+
+```
+
+## Results
+
+```{r,}
+IRTmodel <- ltm(LSAT~z1,IRT.param= TRUE)
+summary(IRTmodel)
+coef(IRTmodel)
+``` 
+ 
+The Difficulty is analagous to $\theta$ and 'ability'.
+The figures are $<0$ and in this respect the questions are 'easy'.
+
+Discrimination describes how well the question discriminates ability; in this context a good discriminator would be $>1$; these questions are poor discriminators.    
+  
+## Plots 
+```{r,}
+plot(IRTmodel, type="ICC")
+
+```
+
+S curves would be optimal but the tails are missing.   
+  
+  
+  
+  
+```{r}
+plot(IRTmodel, type ="ICC",items=3)
+```
+  
+Curve 3 is the most representative of an S curve and this item is the best discrimator of ability.    
+  
+    
+```{r}
+plot(IRTmodel, type ="IIC",items=0)      
+```     
+ 
+   
+```{r}    
+factor.scores(IRTmodel)
+```
+  
+  
+Empirical Bayes scoring  
+
+Where z1 is the predicted ability based on the pattern of scores.
+Most common combination is to get them all right (298), questions are too easy.  
+  
+  
+#3PL 
+
+```{r}
+IRTmodel_guess=tpm(LSAT,type="latent.trait",IRT.param = TRUE)
+```  
+  
+    
+    
+  
+```{r}
+factor.scores(IRTmodel_guess)
+```  
+
+```{r}
+anova(IRTmodel,IRTmodel_guess)  
+
+```
+  
+Addition of guessing parameter does not improve the model,illustrated by log likelihood.  
+There is no significant variance between 2PL and 3PL.
+  
+  
+  
+******
+  
+  
+  
+  
